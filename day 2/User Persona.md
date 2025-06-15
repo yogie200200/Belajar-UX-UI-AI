@@ -8,35 +8,33 @@ Bikin decision design jadi lebih fokus
 Tau exactly siapa yang lo design-in
 Avoid fitur yang ga berguna
 
-User Persona Structure:
-1. Basic Demographics
+## User Persona Structure:
 
+### 1. Basic Demographics
 Nama (user)
 Umur, job title, experience level
 Tech skills level
 
-2. Goals & Motivations
-
+### 2. Goals & Motivations
 Apa yang mau dicapai
 Motivasi pake app ini
 
-3. Pain Points & Frustrations
-
+### 3. Pain Points & Frustrations
 Masalah yang dialami sekarang
 Hal yang bikin stress
 
-4. Behavior Patterns
-
+### 4. Behavior Patterns
 Gimana cara kerja sehari-hari
 Kapan biasanya butuh app ini
 
-5. Quote
+### 5. Quote
 Kalimat yang represent mindset user
 
 ## Contoh User Persona
-User Persona: Joko Susseno - FINAL VERSION
-1. Basic Demographics
 
+User Persona: Joko Susseno - FINAL VERSION
+
+1. Basic Demographics
 Nama: Joko Susseno
 Job: RnD Staff - Ceramic Industry
 Age: 25
