@@ -16,6 +16,9 @@ Selamat datang di jurnal belajar saya. File ini berisi dokumentasi harian, insig
 ### 📚 Materi Dipelajari
 - Hal Dasar Dalam Design App Di Figma
 
+### 📚 Hasil Belajar Design Figma
+- https://www.figma.com/design/K6atZw5nMSN5G8DO4Gimye/CeramiCalc---User-Flow?m=auto&t=QIYTGbpnecw5yiT1-6
+
 ### 💡 Insight / Catatan Penting
 > Dalami lagi Belajar Design Figma
 
