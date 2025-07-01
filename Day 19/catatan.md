@@ -28,8 +28,10 @@ Selamat datang di jurnal belajar saya. File ini berisi dokumentasi harian, insig
 - 
 
 ### 📌 Next Step
-- [x] Buat Halaman Buat Fomrulasi
-- [x] 
+- [x] Buat Halaman Buat Formulasi
+- [x] Buat Service Formulasi
+- [x] Buat Model Formulasi
+- [x] Buat Controller Formulasi
 
 ---
 
