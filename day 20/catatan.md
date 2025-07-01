@@ -4,7 +4,7 @@ Selamat datang di jurnal belajar saya. File ini berisi dokumentasi harian, insig
 
 ---
 
-## 📅 Hari ke-20: User Research (Self-Interview) [01 - 07 - 2025]
+## 📅 Hari ke-20: Membuat Formulasi Service, Formulasi Model dan, Formulasi Controller [01 - 07 - 2025]
 
 ### 🎯 Target Belajar
 - [x] Belajar SharedPreferences
