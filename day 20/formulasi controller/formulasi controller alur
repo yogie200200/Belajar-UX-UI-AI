@@ -1,0 +1,72 @@
+Alur Membuat Controller dengan Provider Pattern
+1. Setup Dasar Controller
+
+Extends ChangeNotifier untuk notifikasi perubahan state
+Import dependencies yang diperlukan (model, service, flutter/cupertino)
+Buat private variables untuk menyimpan state
+
+2. Definisi State Variables
+
+List data → List<Model> _dataList = []
+Loading state → bool _isLoading = false
+Getters untuk akses state dari luar → get dataList dan get isLoading
+
+3. Method Load Data (READ)
+
+Set _isLoading = true dan notifyListeners()
+Panggil service untuk ambil data dari storage
+Simpan hasil ke _dataList
+Handle error dengan try-catch
+Set _isLoading = false di finally block
+notifyListeners() untuk update UI
+
+4. Method Tambah Data (CREATE)
+
+Tambah data ke list lokal dulu
+Panggil service untuk save ke storage
+Jika berhasil → notifyListeners() dan return true
+Jika gagal → hapus dari list lokal, notifyListeners(), return false
+
+5. Method Hapus Data (DELETE)
+
+Cari dan hapus data dari list berdasarkan ID
+Panggil service untuk hapus dari storage
+notifyListeners() untuk update UI
+Return true jika berhasil, false jika gagal
+
+6. Method Update Data (UPDATE)
+
+Cari index data berdasarkan ID
+Update data di list lokal
+Panggil service untuk update di storage
+notifyListeners() untuk update UI
+Return true jika berhasil, false jika gagal
+
+7. Error Handling Pattern
+
+Semua method async menggunakan try-catch
+Print error untuk debugging
+Rollback perubahan lokal jika operasi storage gagal
+Return boolean untuk indikasi success/failure
+
+8. Notification Pattern
+
+notifyListeners() dipanggil setiap kali ada perubahan state
+Dipanggil setelah loading state berubah
+Dipanggil setelah data berubah (tambah/hapus/update)
+Dipanggil saat rollback error
+
+Tips Implementasi:
+
+Konsisten dengan naming convention
+Selalu handle error dengan graceful fallback
+Optimistic update → update UI dulu, baru save ke storage
+Rollback jika operasi storage gagal
+Loading state untuk UX yang baik
+
+Key points yang penting diingat:
+
+ChangeNotifier untuk state management
+Optimistic updates dengan rollback pattern
+Consistent error handling di semua method
+Loading state untuk UX yang smooth

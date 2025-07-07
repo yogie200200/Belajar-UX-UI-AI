@@ -11,21 +11,63 @@ class FormulasiController extends ChangeNotifier {
 
   ///Load Data Dari SharedPreferences
   Future<void> loadFormulasi() async {
-    _formulasiList = await FormulasiService.getFormulasiList();
+    _isLoading = true;
     notifyListeners();
+
+    try {
+      _formulasiList = await FormulasiService.getFormulasiList();
+    } catch (e) {
+      print('Error loading formulasi: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
   ///Tambah Formulasi Baru
-  Future<void> tambahFormulasi(Formulasi formulasi)async{
-    _formulasiList.add(formulasi);
-    await FormulasiService.saveFormulasi(formulasi);
-    notifyListeners();
+  Future<bool> tambahFormulasi(Formulasi formulasi) async {
+    try {
+      _formulasiList.add(formulasi);
+      await FormulasiService.saveFormulasi(formulasi);
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print('Error saving formulasi: $e');
+      // Remove from list if save failed
+      _formulasiList.removeLast();
+      notifyListeners();
+      return false;
+    }
   }
 
   /// Hapus Formulasi
-  Future<void> hapusFormulasi(String id)async{
-    _formulasiList.removeWhere((f)=>f.id == id);
-    await FormulasiService.deleteFormulasi(id);
-    notifyListeners();
+  Future<bool> hapusFormulasi(String id) async {
+    try {
+      final removedFormulasi = _formulasiList.firstWhere((f) => f.id == id);
+      _formulasiList.removeWhere((f) => f.id == id);
+      await FormulasiService.deleteFormulasi(id);
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print('Error deleting formulasi: $e');
+      return false;
+    }
+  }
+
+  // Update formulasi
+  Future<bool> updateFormulasi(Formulasi formulasi) async {
+    try {
+      final index = _formulasiList.indexWhere((f) => f.id == formulasi.id);
+      if (index != -1) {
+        _formulasiList[index] = formulasi;
+        await FormulasiService.updateFormulasi(formulasi);
+        notifyListeners();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print('Error updating formulasi: $e');
+      return false;
+    }
   }
 }

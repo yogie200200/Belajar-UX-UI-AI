@@ -1,0 +1,100 @@
+Alur Membuat Dynamic Form Controller
+1. Setup Wrapper Class untuk Input Fields
+BahanInput Class:
+
+Buat TextEditingController untuk setiap field input
+Buat getter untuk akses nilai dengan parsing otomatis
+Buat setter untuk set nilai ke controller
+Method dispose() untuk cleanup memory
+
+Pattern Getter/Setter:
+String get namaField => controller.text;
+set namaField(String value) => controller.text = value;
+double get numericField => double.tryParse(controller.text) ?? 0.0;
+set numericField(double value) => controller.text = value.toString();
+2. Setup Dynamic Form Controller
+State Management:
+
+Extends ChangeNotifier untuk state management
+List wrapper objects → List<BahanInput> _bahanInputs = [BahanInput()]
+Initialize dengan 1 item sebagai default
+Getter untuk akses list dari luar
+
+3. Method Tambah Input (Dynamic Add)
+
+Add new wrapper object ke list
+notifyListeners() untuk update UI
+Tidak perlu validasi khusus
+
+4. Method Hapus Input (Dynamic Remove)
+
+Cek minimum constraint → minimal 1 item harus ada
+Dispose wrapper object sebelum hapus (penting untuk memory)
+Remove dari list berdasarkan index
+notifyListeners() untuk update UI
+
+5. Method Update Input (Batch Update)
+
+Validasi index dalam range list
+Update multiple fields dalam satu method
+notifyListeners() untuk update UI
+Alternatif: bisa juga per-field update
+
+6. Method Validasi (Form Validation)
+
+Loop semua wrapper objects dalam list
+Cek setiap field apakah kosong/invalid
+Return boolean untuk status validasi
+Early return false jika ada yang invalid
+
+7. Method Konversi Data (Data Transformation)
+
+Convert wrapper objects ke model objects
+Mapping dengan .map() untuk transformasi
+Return List<Model> yang siap disimpan
+Extract nilai dari getter wrapper
+
+8. Method Reset Form
+
+Dispose semua wrapper objects dulu
+Reset list ke state awal (1 item kosong)
+notifyListeners() untuk update UI
+
+9. Override dispose() Controller
+
+Dispose semua wrapper objects untuk cleanup
+Call super.dispose() untuk cleanup parent
+Penting untuk memory management
+
+Key Patterns:
+Memory Management:
+
+Selalu dispose TextEditingController
+Dispose sebelum remove dari list
+Dispose saat reset dan controller dispose
+
+Data Flow:
+
+UI → Controller → Wrapper → TextEditingController
+Getter/Setter untuk abstraksi akses data
+Validation sebelum konversi ke model
+
+State Updates:
+
+notifyListeners() setiap perubahan struktur list
+Tidak perlu notify untuk perubahan dalam TextEditingController
+Notify saat add/remove/reset
+
+Use Cases:
+
+Dynamic form fields (add/remove inputs)
+Multi-item input (daftar bahan, item order)
+Form dengan validasi batch
+Complex form state management
+
+Tips Implementasi:
+
+Wrapper class untuk encapsulasi controller
+Minimum constraint untuk UX yang baik
+Memory cleanup yang konsisten
+Batch validation untuk efisiensi
