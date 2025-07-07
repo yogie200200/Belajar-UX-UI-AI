@@ -1,0 +1,133 @@
+🧠 ALUR PEMBUATAN MODEL DATA DI FLUTTER (Contoh: Formulasi & Bahan)
+✅ 1. Pahami Tujuan:
+Lo pengen punya data formulasi keramik yang isinya:
+
+Nama formulasi
+
+Deskripsi
+
+Daftar bahan (bisa lebih dari satu)
+
+Tanggal dibuat
+
+Dan tiap bahan punya: nama, persentase, satuan, qty kering, qty basah
+
+✅ 2. Buat Kelas Model (Formulasi dan Bahan)
+🧱 Cara mikirnya:
+
+1 formulasi = 1 objek
+
+Di dalam formulasi = daftar bahan (List<Bahan>)
+
+Jadi kita perlu 2 class: Formulasi dan Bahan
+
+✅ 3. Isi Properti dari Class
+🔸 Class Formulasi
+Berisi:
+
+id: unik tiap formulasi
+
+namaFormulasi: nama resepnya
+
+deskripsi: catatan tambahan
+
+bahan: daftar Bahan
+
+tanggalDibuat: waktu disimpannya
+
+🔸 Class Bahan
+Berisi:
+
+bahanBaku: nama bahan (misal: Kaolin)
+
+persentase: string persentase (misal: “30%”)
+
+satuan: satuan bahan (misal: “gram” atau “kg”)
+
+qtyKering: berat saat kering
+
+qtyBasah: berat setelah dicampur air
+
+✅ 4. Tambahkan toJson() dan fromJson()
+🧠 Kenapa penting?
+Karena kita perlu:
+
+Menyimpan data ke shared_preferences (atau database lainnya) → pakai .toJson()
+
+Mengambil data dan ubah ke objek → pakai .fromJson()
+
+🔁 Konsepnya kayak gini:
+📦 toJson() = ubah objek jadi map
+dart
+Salin
+Edit
+Formulasi → Map → Simpan ke storage
+🔄 fromJson() = ambil map dari storage, ubah jadi objek
+dart
+Salin
+Edit
+Map → Formulasi → Tampilkan di UI
+✅ 5. Trik Paling Penting Saat Ada List di Dalam Model
+Kalau Formulasi punya List<Bahan>:
+
+Saat encode:
+
+dart
+Salin
+Edit
+bahan.map((b) => b.toJson()).toList()
+Saat decode:
+
+dart
+Salin
+Edit
+(json['bahan'] as List).map((b) => Bahan.fromJson(b)).toList()
+Lo wajib banget inget pola itu bro buat semua model yang ada list of object di dalamnya.
+
+✅ 6. Error Umum yang Harus Dihindari
+Typo di key JSON (misalnya persentasi vs persentase)
+
+.toDouble() wajib kalau nilai dari JSON bisa integer atau double
+
+Jangan lupa .toList() setelah pakai .map()
+
+💡 REKAP POLA AJAIB YANG HARUS LO HAFAL
+🔸 Struktur Model Umum:
+dart
+Salin
+Edit
+class NamaModel {
+  final Tipe properti1;
+  final Tipe properti2;
+  ...
+  
+  NamaModel({required properti1, required properti2, ...});
+
+  Map<String, dynamic> toJson() => {...};
+
+  factory NamaModel.fromJson(Map<String, dynamic> json) => NamaModel(...);
+}
+🔸 Kalau Ada List of Object di Dalamnya:
+dart
+Salin
+Edit
+// Encode:
+'listObjek': list.map((x) => x.toJson()).toList()
+
+// Decode:
+(json['listObjek'] as List).map((x) => Tipe.fromJson(x)).toList()
+🧭 ALUR PAKAI MODEL DI PROJECT
+Buat model: class Formulasi dan Bahan
+
+Tambahkan toJson() dan fromJson()
+
+Gunakan model saat:
+
+Ambil data dari SharedPreferences → Formulasi.fromJson(...)
+
+Simpan data ke SharedPreferences → formulasi.toJson()
+
+Tampilkan di UI: pakai ListView, Dropdown, dll.
+
+Edit / tambah: manipulasi data model pakai controller dan update list.
+

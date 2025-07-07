@@ -1,0 +1,160 @@
+🧭 ALUR DASAR BUAT PROJECT FLUTTER MULTI SCREEN DENGAN BOTTOM NAVIGATION
+✅ [1] Buat Project Baru
+bash
+Salin
+Edit
+flutter create nama_project_lo
+cd nama_project_lo
+✅ [2] Buat Struktur Folder (Manual atau Auto)
+Di dalam folder lib/, buat struktur seperti ini:
+
+css
+Salin
+Edit
+lib/
+│
+├── main.dart
+├── screens/
+│   ├── home_screen.dart
+│   ├── help_screen.dart
+│   ├── profil_screen.dart
+│   ├── riwayat_formulasi_screen.dart
+│   ├── formulasi_baru_screen.dart
+│   └── hitung_formulasi_screen.dart
+✅ [3] Isi main.dart
+dart
+Salin
+Edit
+import 'package:flutter/material.dart';
+import 'screens/home_screen.dart';
+import 'screens/help_screen.dart';
+import 'screens/profil_screen.dart';
+import 'screens/riwayat_formulasi_screen.dart';
+import 'screens/formulasi_baru_screen.dart';
+import 'screens/hitung_formulasi_screen.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => MainScreen(),
+        '/formulasi_Baru': (context) => FormulasiBaruScreen(),
+        '/hitung_formulasi': (context) => HitungFormulasiScreen(),
+        '/riwayat_formulasi': (context) => RiwayatFormulasiScreen(),
+      },
+    );
+  }
+}
+✅ [4] Buat MainScreen (Halaman yang Punya Bottom Nav)
+dart
+Salin
+Edit
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
+  @override
+  State<MainScreen> createState() => _ButtomNavigatorBarWidgetState();
+}
+
+class _ButtomNavigatorBarWidgetState extends State<MainScreen> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _screens = [
+    HomeScreen(),
+    HelpScreen(),
+    ProfilScreen(),
+    RiwayatFormulasiScreen(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: IndexedStack(index: _selectedIndex, children: _screens),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        selectedItemColor: Colors.teal,
+        unselectedItemColor: Colors.grey,
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.help), label: 'Bantuan'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
+          BottomNavigationBarItem(icon: Icon(Icons.task), label: 'Trial'),
+        ],
+      ),
+    );
+  }
+}
+✅ [5] Isi Dummy Screen di screens/*.dart
+Misal: home_screen.dart
+
+dart
+Salin
+Edit
+import 'package:flutter/material.dart';
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Home")),
+      body: Center(child: Text("Ini halaman Home")),
+    );
+  }
+}
+Lakukan hal yang sama untuk:
+
+HelpScreen
+
+ProfilScreen
+
+RiwayatFormulasiScreen
+
+FormulasiBaruScreen
+
+HitungFormulasiScreen
+
+✅ [6] Navigasi ke Halaman Lain
+Contoh: dari HomeScreen, lo mau buka halaman FormulasiBaruScreen:
+
+dart
+Salin
+Edit
+ElevatedButton(
+  onPressed: () {
+    Navigator.pushNamed(context, '/formulasi_Baru');
+  },
+  child: Text("Tambah Formulasi"),
+)
+🔁 REKAP STEP SINGKAT (Versi Checklist)
+✅	Langkah
+✔	Buat project baru (flutter create)
+✔	Tambah folder screens/
+✔	Buat file main.dart dengan MaterialApp dan routes
+✔	Buat MainScreen dengan BottomNavigationBar
+✔	Buat isi setiap screen (HomeScreen, HelpScreen, dll.)
+✔	Tambah tombol navigasi pakai Navigator.pushNamed()
+

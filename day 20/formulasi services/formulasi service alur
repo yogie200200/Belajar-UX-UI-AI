@@ -1,0 +1,120 @@
+📦 Nama File: formulasi_service.dart
+Tujuannya: jadi service yang ngurus semua operasi data Formulasi, termasuk:
+
+Menyimpan
+
+Mengambil
+
+Menghapus
+
+Memperbarui
+
+Pakai SharedPreferences buat simpan ke storage HP secara lokal.
+
+🧭 ALUR KERJA UTAMA:
+✅ 1. Konstanta Kunci Penyimpanan
+dart
+Salin
+Edit
+static const String _keyFormulasi = 'formulasi_list';
+Digunakan sebagai kunci untuk menyimpan dan mengambil data dari SharedPreferences.
+Bayangin ini kayak nama laci tempat nyimpen data Formulasi.
+
+✅ 2. Simpan List Formulasi (encode)
+dart
+Salin
+Edit
+static Future<void> saveFormulasiList(List<Formulasi> formulasiList)
+🔄 ALURNYA:
+
+Ambil objek SharedPreferences
+
+Ubah List<Formulasi> menjadi List<Map>
+
+Ubah jadi String JSON pakai jsonEncode()
+
+Simpan ke storage pakai .setString()
+
+🧠 Tujuan utama encode di sini: biar bisa nyimpen data kompleks (list of object) jadi string.
+
+✅ 3. Ambil List Formulasi (decode)
+dart
+Salin
+Edit
+static Future<List<Formulasi>> getFormulasiList()
+🔄 ALURNYA:
+
+Ambil data dari storage (pakai kunci _keyFormulasi)
+
+Kalau kosong/null → return list kosong
+
+Kalau ada:
+
+Ubah dari String JSON → List<Map> pakai jsonDecode()
+
+Ubah dari Map → objek Formulasi pakai .fromJson()
+
+🧠 Decode di sini bikin data yang disimpan bisa dipakai lagi di UI
+
+✅ 4. Tambah Formulasi Baru
+dart
+Salin
+Edit
+static Future<void> saveFormulasi(Formulasi formulasi)
+🔄 ALURNYA:
+
+Ambil semua formulasi yang sudah ada
+
+Tambahkan yang baru
+
+Simpan ulang semua ke storage
+
+✅ 5. Hapus Formulasi Berdasarkan ID
+dart
+Salin
+Edit
+static Future<void> deleteFormulasi(String id)
+🔄 ALURNYA:
+
+Ambil list data
+
+Hapus elemen yang punya id yang cocok
+
+Simpan ulang list-nya
+
+🧠 Sama seperti kerja list biasa, tapi jangan lupa simpan ulang karena storage gak otomatis berubah.
+
+✅ 6. Update Formulasi
+dart
+Salin
+Edit
+static Future<void> updateFormulasi(Formulasi formulasi)
+🔄 ALURNYA:
+
+Ambil semua formulasi
+
+Cari formulasi yang id-nya cocok
+
+Ganti data lama dengan yang baru
+
+Simpan ulang semua list
+
+🧠 Pastikan id formulasi gak berubah biar bisa ketemu saat update.
+
+🧠 REKAP ALUR BESAR
+Fungsi	Tujuan	Proses Utama
+saveFormulasiList()	Simpan seluruh list ke storage	encode + setString
+getFormulasiList()	Ambil data dari storage	getString + decode
+saveFormulasi()	Tambah formulasi ke list	get + add + simpan ulang
+deleteFormulasi(id)	Hapus 1 formulasi berdasarkan id	get + removeWhere + simpan
+updateFormulasi()	Ganti data formulasi tertentu	get + update + simpan
+
+🧩 Kapan File Ini Dipakai?
+Di UI, saat lo:
+
+Tambah formulasi: FormulasiService.saveFormulasi(...)
+
+Ambil semua formulasi untuk ditampilkan: FormulasiService.getFormulasiList()
+
+Edit atau hapus: cukup panggil fungsi yang sesuai
+
