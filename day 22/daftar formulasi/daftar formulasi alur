@@ -1,0 +1,234 @@
+Alur Membuat List Screen dengan CRUD Operations
+1. Setup Dasar Screen
+StatefulWidget Setup:
+
+Extends StatefulWidget untuk state management
+Import dependencies (models, controllers, screens, provider)
+Buat State class dengan lifecycle methods
+
+Lifecycle Management:
+
+initState() → load data saat screen pertama kali dibuka
+WidgetsBinding.instance.addPostFrameCallback() → pastikan context ready
+context.read<Controller>().loadData() → trigger load data
+
+2. Build Method Structure
+Scaffold Layout:
+
+AppBar dengan title dan styling
+Body → Consumer untuk listen state changes
+FloatingActionButton untuk tambah data baru
+
+Consumer Pattern:
+
+Consumer<Controller> untuk listen perubahan state
+Builder function dengan parameter (context, controller, child)
+Conditional rendering berdasarkan state
+
+3. State Handling (Conditional UI)
+Loading State:
+
+Check controller.isLoading
+Return Center(CircularProgressIndicator())
+Show loading indicator saat data belum ready
+
+Empty State:
+
+Check controller.dataList.isEmpty
+Return Center dengan Column
+Icon + Text untuk empty state message
+Styling dengan Colors.grey untuk subtle appearance
+
+Data State:
+
+ListView.builder untuk render data
+itemCount dari controller.dataList.length
+itemBuilder untuk build setiap item
+
+4. List Item Implementation
+Card Layout:
+
+Card widget dengan margin
+ListTile untuk struktur item
+Consistent spacing dengan EdgeInsets
+
+ListTile Structure:
+
+title → data utama (nama/judul)
+subtitle → informasi tambahan
+trailing → action button (delete/edit)
+onTap → navigasi ke detail/action
+
+Subtitle Information:
+
+Column untuk multiple info
+CrossAxisAlignment.start untuk alignment
+Text dengan styling berbeda (size, color)
+SizedBox untuk spacing
+
+5. Delete Functionality
+Confirmation Dialog:
+
+showDialog<bool> untuk return confirmation
+AlertDialog dengan title, content, actions
+TextButton untuk Batal dan Hapus
+Return true/false berdasarkan pilihan user
+
+Delete Flow:
+
+Await confirmation dari dialog
+Check if confirm == true
+Call controller.deleteMethod(id)
+Show SnackBar untuk feedback
+Handle success/error response
+
+Dialog Implementation:
+dartfinal confirm = await showDialog<bool>(
+  context: context,
+  builder: (context) => AlertDialog(...)
+);
+6. Detail Dialog
+Method untuk Show Detail:
+
+showDialog dengan AlertDialog
+SingleChildScrollView untuk scrollable content
+Column untuk layout vertikal
+MainAxisSize.min untuk compact dialog
+
+Detail Content:
+
+Text dengan bold untuk label
+Normal text untuk value
+SizedBox untuk spacing
+List mapping untuk dynamic content
+Styling dengan TextStyle
+
+Dialog Structure:
+
+title → nama/judul utama
+content → detail information
+actions → button untuk close
+
+7. Navigation Implementation
+FloatingActionButton:
+
+onPressed → navigasi ke form screen
+Navigator.push dengan MaterialPageRoute
+Styling dengan backgroundColor dan iconColor
+
+Navigation Pattern:
+dartNavigator.push(
+  context,
+  MaterialPageRoute(builder: (context) => FormScreen()),
+);
+8. Data Display Patterns
+Date Formatting:
+
+DateTime properties → day, month, year
+String interpolation → '${date.day}/${date.month}/${date.year}'
+Consistent format across app
+
+Dynamic Content:
+
+List.map() untuk render dynamic items
+Spread operator (...) untuk expand list
+Conditional rendering dengan if statements
+
+Info Summary:
+
+Count information → '${list.length} items'
+Metadata display → date, status, etc.
+Separator → bullet points atau pipes
+
+9. Error Handling & UX
+SnackBar Feedback:
+
+ScaffoldMessenger.of(context).showSnackBar()
+Success message untuk operasi berhasil
+Error message untuk operasi gagal
+Consistent styling untuk feedback
+
+Loading States:
+
+CircularProgressIndicator untuk loading
+Empty state untuk no data
+Error state jika diperlukan
+
+10. Provider Integration
+Consumer Usage:
+
+Wrap body dengan Consumer
+Listen to controller state changes
+Auto rebuild saat state berubah
+
+Controller Access:
+
+context.read<Controller>() untuk call methods
+No rebuild saat access via read
+Use dalam event handlers
+
+Key Patterns:
+List Screen Structure:
+
+AppBar + Consumer Body + FloatingActionButton
+Conditional rendering untuk different states
+Card-based item layout
+Consistent spacing dan styling
+
+CRUD Operations:
+
+Create → FloatingActionButton ke form
+Read → Consumer untuk display data
+Update → onTap untuk edit (optional)
+Delete → trailing button dengan confirmation
+
+Dialog Patterns:
+
+Confirmation dialog untuk destructive actions
+Detail dialog untuk view information
+Consistent button styling dan behavior
+
+State Management:
+
+Provider Consumer untuk reactive UI
+Controller methods untuk business logic
+Local navigation untuk screen transitions
+
+Tips Implementasi:
+
+Consistent styling untuk semua items
+Proper confirmation untuk delete actions
+Loading states untuk better UX
+Error handling yang graceful
+Responsive layout untuk different screen sizes
+
+
+Ini classic List Screen pattern yang bakal kamu pakai berulang-ulang!
+Key insight dari pattern ini:
+
+Three-state UI → Loading, Empty, Data
+Confirmation pattern → Always confirm destructive actions
+Detail dialog → Quick view tanpa full navigation
+Provider integration → Reactive UI dengan minimal code
+
+Common variations dari pattern ini:
+
+Pull to refresh → tambah RefreshIndicator
+Search functionality → tambah SearchBar di AppBar
+Filter/Sort → tambah dropdown atau tabs
+Infinite scroll → ganti ListView dengan pagination
+Swipe actions → tambah Dismissible widget
+
+Pro tips:
+
+initState dengan postFrameCallback → hindari build-time errors
+Generic confirmation dialog → buat reusable component
+Consistent date formatting → buat helper function
+Loading states → selalu kasih feedback ke user
+
+Pattern ini bisa langsung dipakai untuk screen lain seperti:
+
+Daftar produk
+Daftar pesanan
+Daftar kategori
+dll.

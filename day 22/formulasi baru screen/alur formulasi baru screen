@@ -1,0 +1,178 @@
+Alur Membuat Form Screen dengan Dynamic Input
+1. Setup Dasar Screen
+StatefulWidget Setup:
+
+Extends StatefulWidget untuk state management
+Buat State class dengan lifecycle methods
+Import dependencies yang diperlukan (controllers, models, provider)
+
+State Variables:
+
+GlobalKey<FormState> untuk validasi form
+TextEditingController untuk field statis
+Custom controller untuk dynamic input (BahanInputController)
+Loading state → bool _isLoading = false
+
+2. Lifecycle Management
+initState():
+
+Initialize custom controller → _bahanController = BahanInputController()
+Setup listener jika diperlukan
+Call super.initState()
+
+dispose():
+
+Dispose semua TextEditingController
+Dispose custom controller
+Call super.dispose()
+
+3. Method Validasi & Simpan Data
+Validation Flow:
+
+Validasi form statis → _formKey.currentState!.validate()
+Validasi custom controller → _bahanController.validateAllBahan()
+Show SnackBar jika validasi gagal
+Early return jika ada yang invalid
+
+Save Data Flow:
+
+Set loading state → setState(() => _isLoading = true)
+Create model object dari input data
+Generate unique ID → DateTime.now().microsecondsSinceEpoch.toString()
+Convert dynamic data → _bahanController.toBahanList()
+Call controller method → context.read<Controller>().tambahData()
+
+Response Handling:
+
+Success → SnackBar hijau + Navigator.pop()
+Error → SnackBar merah + tetap di screen
+Finally → setState(() => _isLoading = false)
+
+4. UI Structure (Build Method)
+Scaffold Structure:
+
+AppBar dengan title dan styling
+Form widget dengan GlobalKey
+Padding untuk spacing
+Column sebagai main layout
+
+Static Form Fields:
+
+TextFormField untuk setiap input statis
+InputDecoration dengan label, border, prefixIcon
+Validator untuk setiap field
+SizedBox untuk spacing
+
+5. Dynamic Input Section
+Section Header:
+
+Row dengan title dan tombol tambah
+Text untuk judul section
+ElevatedButton untuk tambah input
+MainAxisAlignment.spaceBetween untuk layout
+
+Dynamic List Implementation:
+
+Expanded untuk flexible height
+ChangeNotifierProvider.value untuk provide controller
+Consumer untuk listen perubahan
+ListView.builder untuk render dynamic items
+
+6. Dynamic Item Card
+Card Structure:
+
+Card dengan margin dan padding
+Column untuk layout vertikal
+Row untuk header (title + delete button)
+
+Item Header:
+
+Text untuk nomor item → "Bahan ${index + 1}"
+Conditional delete button → jika length > 1
+IconButton dengan onPressed hapus
+
+Item Fields:
+
+TextFormField untuk setiap field
+Controller dari dynamic controller → controller.bahanInputs[index].fieldController
+InputDecoration dengan styling konsisten
+SizedBox untuk spacing antar field
+
+7. Submit Button
+Button Properties:
+
+SizedBox untuk full width
+ElevatedButton dengan conditional onPressed
+Disabled saat loading → _isLoading ? null : _simpanFormulasi
+Loading indicator atau text berdasarkan state
+
+8. Error Handling & UX
+SnackBar Pattern:
+
+ScaffoldMessenger.of(context).showSnackBar()
+SnackBar dengan content dan backgroundColor
+Colors.green untuk success, Colors.red untuk error
+
+Loading State:
+
+CircularProgressIndicator saat loading
+Disable button saat loading
+Try-catch-finally untuk error handling
+
+9. Provider Integration
+Provider Setup:
+
+ChangeNotifierProvider.value untuk existing controller
+Consumer untuk listen perubahan
+context.read<Controller>() untuk call methods
+
+Data Flow:
+
+UI Input → TextEditingController
+Dynamic Controller → manage dynamic inputs
+Main Controller → CRUD operations
+Provider → state management
+
+Key Patterns:
+Form Validation:
+
+Static validation dengan FormState
+Custom validation dengan controller method
+Show feedback dengan SnackBar
+Early return untuk invalid state
+
+Dynamic UI:
+
+ListView.builder untuk dynamic items
+Conditional rendering untuk delete button
+Provider pattern untuk state management
+Memory cleanup di dispose
+
+State Management:
+
+Local state untuk loading
+Controller state untuk data
+Provider untuk sharing state
+Lifecycle management untuk cleanup
+
+Tips Implementasi:
+
+Consistent styling untuk semua input
+Proper validation untuk UX yang baik
+Loading states untuk feedback
+Memory management yang benar
+Error handling yang graceful
+
+Key insight dari pattern ini:
+
+Separation of concerns → static form terpisah dari dynamic form
+Layered validation → form validation dulu, baru custom validation
+Provider composition → multiple controllers bekerja sama
+Memory safety → proper dispose untuk semua controllers
+
+Pattern ini bisa dipakai untuk form apapun yang butuh dynamic input seperti:
+
+Form pemesanan dengan multiple items
+Form survey dengan pertanyaan dinamis
+Form inventory dengan multiple produk
+dll.
